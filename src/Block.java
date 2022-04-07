@@ -113,4 +113,41 @@ public class Block {
 
         return blockLabel;
     }
+
+    public void setSouthWall(){
+        Border southBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0,0,3,0, Color.blue),
+                BorderFactory.createMatteBorder(1,1,0,1, Color.black)
+        );
+        label.setBorder(southBorder);
+    }
+
+    public void setNorthWall(){
+        Border northBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(3,0,0,0, Color.blue),
+                BorderFactory.createMatteBorder(0,1,1,1, Color.black)
+        );
+        label.setBorder(northBorder);
+    }
+
+    public void setWestWall(){
+        Border westBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0,3,0,0, Color.blue),
+                BorderFactory.createMatteBorder(1,0,1,1, Color.black)
+        );
+        label.setBorder(westBorder);
+    }
+
+    public void setEastWall(){
+        Border eastBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0,0,0,3, Color.blue),
+                BorderFactory.createMatteBorder(1,1,1,0, Color.black)
+        );
+        label.setBorder(eastBorder);
+    }
+
+    public void resetWalls(){
+        Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
+        label.setBorder(border);
+    }
 }

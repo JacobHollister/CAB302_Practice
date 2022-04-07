@@ -82,25 +82,25 @@ public class Main extends JFrame {
                             BorderFactory.createMatteBorder(1,1,1,0, Color.black)
                     );
 
-                    if (e.getComponent().getMousePosition().getY() < (height * .10)){
-                        block.label.setBorder(northBorder);
-                        northBlock.label.setBorder(southBorder);
-                    } else if (e.getComponent().getMousePosition().getY() > (height - (height * .10))){
-                        block.label.setBorder(southBorder);
-                        southBlock.label.setBorder(northBorder);
-                    } else if (e.getComponent().getMousePosition().getX() < (width * .10)) {
-                        block.label.setBorder(westBorder);
-                        westBlock.label.setBorder(eastBorder);
-                    } else if (e.getComponent().getMousePosition().getX() > (width - (width * .10))) {
-                        block.label.setBorder(eastBorder);
-                        eastBlock.label.setBorder(westBorder);
+                    if (e.getComponent().getMousePosition().getY() < (height * .05)){
+                        block.setNorthWall();
+                        northBlock.setSouthWall();
+                    } else if (e.getComponent().getMousePosition().getY() > (height - (height * .05))){
+                        block.setSouthWall();
+                        southBlock.setNorthWall();
+                    } else if (e.getComponent().getMousePosition().getX() < (width * .05)) {
+                        block.setWestWall();
+                        westBlock.setEastWall();
+                    } else if (e.getComponent().getMousePosition().getX() > (width - (width * .05))) {
+                        block.setEastWall();
+                        eastBlock.setWestWall();
                     } else {
                         Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
-                        block.label.setBorder(border);
-                        northBlock.label.setBorder(border);
-                        southBlock.label.setBorder(border);
-                        westBlock.label.setBorder(border);
-                        eastBlock.label.setBorder(border);
+                        block.resetWalls();
+                        northBlock.resetWalls();
+                        southBlock.resetWalls();
+                        westBlock.resetWalls();
+                        eastBlock.resetWalls();
                     }
                 }
             });
@@ -115,11 +115,11 @@ public class Main extends JFrame {
 
                     Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
 
-                    block.label.setBorder(border);
-                    northBlock.label.setBorder(border);
-                    southBlock.label.setBorder(border);
-                    westBlock.label.setBorder(border);
-                    eastBlock.label.setBorder(border);
+                    block.resetWalls();
+                    northBlock.resetWalls();
+                    southBlock.resetWalls();
+                    westBlock.resetWalls();
+                    eastBlock.resetWalls();
 
                 }
             });
