@@ -28,78 +28,105 @@ public class Main extends JFrame {
 
         setLayout(mazeLayout);
 
-        ArrayList<JLabel> maze = new ArrayList<JLabel>();
+        ArrayList<Block> maze = new ArrayList<Block>();
 
         for (int i = 0; i < mazeHeight; i++){
             for (int j = 0; j < mazeWidth; j++){
-                //System.out.println(i + ", " + j);\
-                String location = i + " - " + j;
-                JLabel cell = new JLabel(location);
-                cell.setHorizontalAlignment(SwingConstants.CENTER);
+                int[] location = new int[]{i, j};
+                Block block = new Block(location, (i * mazeHeight + j));
 
-                Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
-                cell.setBorder(border);
+                JLabel cell = block.getLabel();
 
-
-
-                cell.addMouseMotionListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        super.mouseEntered(e);
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        super.mouseExited(e);
-                    }
-
-                    @Override
-                    public void mouseMoved(MouseEvent e) {
-
-                        int height = e.getComponent().getHeight();
-                        int width = e.getComponent().getWidth();
-
-                        if (e.getComponent().getMousePosition().getY() < (height * .10)){
-                            Border topBorder = BorderFactory.createMatteBorder(3,0,0,0, Color.blue);
-                            Border otherBorders =BorderFactory.createMatteBorder(0,1,1,1, Color.black);
-                            Border border = BorderFactory.createCompoundBorder(topBorder, otherBorders);
-                            cell.setBorder(border);
-                        } else if (e.getComponent().getMousePosition().getY() > (height - (height * .10))){
-                            Border topBorder = BorderFactory.createMatteBorder(0,0,3,0, Color.blue);
-                            Border otherBorders =BorderFactory.createMatteBorder(1,1,0,1, Color.black);
-                            Border border = BorderFactory.createCompoundBorder(topBorder, otherBorders);
-                            cell.setBorder(border);
-                        } else if (e.getComponent().getMousePosition().getX() < (width * .10)) {
-                            Border topBorder = BorderFactory.createMatteBorder(0,3,0,0, Color.blue);
-                            Border otherBorders =BorderFactory.createMatteBorder(1,0,1,1, Color.black);
-                            Border border = BorderFactory.createCompoundBorder(topBorder, otherBorders);
-                            cell.setBorder(border);
-                        } else if (e.getComponent().getMousePosition().getX() > (width - (width * .10))) {
-                            Border topBorder = BorderFactory.createMatteBorder(0,0,0,3, Color.blue);
-                            Border otherBorders =BorderFactory.createMatteBorder(1,1,1,0, Color.black);
-                            Border border = BorderFactory.createCompoundBorder(topBorder, otherBorders);
-                            cell.setBorder(border);
-                        } else {
-                             Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
-                             cell.setBorder(border);
-                        }
-                    }
-                });
-
-                cell.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
-                        cell.setBorder(border);
-                    }
-                });
-
-                maze.add(cell);
+                maze.add(block);
             }
         }
 
-        for ( JLabel cell : maze) {
-            add(cell);
+        for (Block block : maze) {
+
+            block.label.addMouseMotionListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    super.mouseExited(e);
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+
+                    int height = e.getComponent().getHeight();
+                    int width = e.getComponent().getWidth();
+
+                    Block northBlock = maze.get(maze.indexOf(block) - mazeWidth);
+                    Block southBlock = maze.get(maze.indexOf(block) + mazeWidth);
+                    Block westBlock = maze.get(maze.indexOf(block) - 1);
+                    Block eastBlock = maze.get(maze.indexOf(block) + 1);
+
+                    Border northBorder = BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(3,0,0,0, Color.blue),
+                            BorderFactory.createMatteBorder(0,1,1,1, Color.black)
+                    );
+                    Border southBorder = BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0,0,3,0, Color.blue),
+                            BorderFactory.createMatteBorder(1,1,0,1, Color.black)
+                    );
+                    Border westBorder = BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0,3,0,0, Color.blue),
+                            BorderFactory.createMatteBorder(1,0,1,1, Color.black)
+                    );
+                    Border eastBorder = BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0,0,0,3, Color.blue),
+                            BorderFactory.createMatteBorder(1,1,1,0, Color.black)
+                    );
+
+                    if (e.getComponent().getMousePosition().getY() < (height * .10)){
+                        block.label.setBorder(northBorder);
+                        northBlock.label.setBorder(southBorder);
+                    } else if (e.getComponent().getMousePosition().getY() > (height - (height * .10))){
+                        block.label.setBorder(southBorder);
+                        southBlock.label.setBorder(northBorder);
+                    } else if (e.getComponent().getMousePosition().getX() < (width * .10)) {
+                        block.label.setBorder(westBorder);
+                        westBlock.label.setBorder(eastBorder);
+                    } else if (e.getComponent().getMousePosition().getX() > (width - (width * .10))) {
+                        block.label.setBorder(eastBorder);
+                        eastBlock.label.setBorder(westBorder);
+                    } else {
+                        Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
+                        block.label.setBorder(border);
+                        northBlock.label.setBorder(border);
+                        southBlock.label.setBorder(border);
+                        westBlock.label.setBorder(border);
+                        eastBlock.label.setBorder(border);
+                    }
+                }
+            });
+
+            block.label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    Block northBlock = maze.get(maze.indexOf(block) - mazeWidth);
+                    Block southBlock = maze.get(maze.indexOf(block) + mazeWidth);
+                    Block westBlock = maze.get(maze.indexOf(block) - 1);
+                    Block eastBlock = maze.get(maze.indexOf(block) + 1);
+
+                    Border border = BorderFactory.createMatteBorder(1,1,1,1, Color.black);
+
+                    block.label.setBorder(border);
+                    northBlock.label.setBorder(border);
+                    southBlock.label.setBorder(border);
+                    westBlock.label.setBorder(border);
+                    eastBlock.label.setBorder(border);
+
+                }
+            });
+        }
+
+        for ( Block block : maze) {
+            add(block.label);
         }
 
 
@@ -112,6 +139,8 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args){
-        new Main();
+        SwingUtilities.invokeLater(() -> {
+            new Main();
+        });
     }
 }
